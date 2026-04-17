@@ -1,0 +1,9 @@
+{"timestamp": "2026-04-11T00:00:00Z", "event": "sprint_start", "sprint_id": "001", "goal": "Receipt Categorization Agent Hardening", "complexity": "medium", "subtask_count": 10, "branch": "sprint/001"}
+{"timestamp": "2026-04-11T00:00:00Z", "event": "sprint_start", "sprint_id": "002", "goal": "Document Chaser + Payroll Collection Improvements", "complexity": "large", "subtask_count": 12, "branch": "sprint/002"}
+{"timestamp": "2026-04-12T00:32:00Z", "event": "ship", "sprint_id": "001", "verdict": "SHIP", "subtasks_completed": 10, "rework_passes": 0, "branch": "sprint/001"}
+{"timestamp": "2026-04-12T12:00:00Z", "event": "ship", "sprint_id": "003", "verdict": "SHIP", "subtasks_completed": 5, "rework_passes": 1, "branch": "sprint/003"}
+{"timestamp": "2026-04-12T14:00:00Z", "event": "sprint_start", "sprint_id": "005", "goal": "SOUL.md Immutable Guardrails", "complexity": "medium", "subtask_count": 6, "branch": "sprint/005"}
+{"timestamp": "2026-04-12T15:00:00Z", "event": "ship", "sprint_id": "004", "verdict": "SHIP", "subtasks_completed": 6, "rework_passes": 0, "branch": "sprint/004"}
+{"timestamp": "2026-04-12T18:00:00Z", "event": "ship", "sprint_id": "005", "verdict": "SHIP", "subtasks_completed": 6, "rework_passes": 0, "branch": "sprint/005"}{"timestamp": "2026-04-12T16:00:00Z", "event": "sprint_start", "sprint_id": "006", "goal": "Complete Self-Evolving Skills System (10 Gaps)", "complexity": "large", "subtask_count": 7, "branch": "sprint/006"}
+{"timestamp": "2026-04-12T16:05:00Z", "event": "coder_dispatch", "sprint_id": "006", "subtask": 1, "agent": "coder", "check_profile": "full"}
+{"timestamp": "2026-04-12T17:40:00Z", "event": "ship", "sprint_id": "006", "verdict": "SHIP", "subtasks_completed": 7, "rework_passes": 0, "branch": "sprint/006"}

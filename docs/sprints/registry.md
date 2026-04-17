@@ -1,0 +1,86 @@
+# Sprint Registry
+
+> **Purpose:** Central dashboard for all active sprints. Primary entry point for context recovery and collision detection.
+> **Updated by:** ORCHESTRATOR on sprint create, subtask completion, ship, and archive.
+> **Convention:** One row per active sprint. Remove row on ship or archive. File Reservations are the collision detection mechanism.
+> **On sprint ship/archive:** Remove the sprint's rows from all three tables. Do NOT remove table headers or this Format Reference section.
+
+## Format Reference
+
+<!-- ORCHESTRATOR: Use these examples when adding rows. On ship/archive, remove only the sprint's rows — leave headers and this section intact. -->
+
+**Active Sprints row:**
+```
+| 001 | sprint/daily-summary | ../vsh-alert-wt-001 | Daily alert summary cron | executing | 4/6 | 2026-04-09 |
+```
+
+**File Reservations row:**
+```
+| Infrastructure/StartUp/DependencyInjection.cs | 001 | modify | L487-490 |
+| Infrastructure/Background/DailyAlertSummaryCronService.cs | 001 | create | — |
+```
+
+**Rebase Status row:**
+```
+| 001 | 81ac9f3 | no | — |
+| 002 | 81ac9f3 | yes | Sprint 001 shipped, modified DependencyInjection.cs |
+```
+
+**Integration Branch (active):**
+```
+- **Branch:** integration/develop-20260410
+- **Target:** develop
+- **Base Commit:** 58eda3a
+- **Created:** 2026-04-10
+- **Status:** active
+```
+
+**Clean state** (after all sprints shipped — tables have headers only, no data rows):
+```
+| ID | Branch | Worktree | Goal | Phase | Progress | Started |
+|----|--------|----------|------|-------|----------|---------|
+
+| File Path | Sprint | Op | Lines |
+|-----------|--------|----|-------|
+
+| Sprint | Base Commit | Needs Rebase | Reason |
+|--------|-------------|--------------|--------|
+```
+
+---
+
+## Integration Branch
+
+<!-- When multi-session collaboration is active, one integration branch is used by all sessions. -->
+<!-- If Status is inactive, sprints merge directly to their target branch (legacy flow). -->
+<!-- Status: inactive | active -->
+
+- **Branch:** integration/master-20260416
+- **Target:** master
+- **Base Commit:** eb4b6d4
+- **Created:** 2026-04-16
+- **Status:** active
+
+---
+
+## Active Sprints
+
+| ID | Branch | Worktree | Goal | Phase | Progress | Started |
+|----|--------|----------|------|-------|----------|---------|
+
+<!-- Phases: planning | executing | verifying | rework | shipping -->
+
+## File Reservations
+
+| File Path | Sprint | Op | Lines |
+|-----------|--------|----|-------|
+
+<!-- Op: create | modify. Lines: L50-85 or "—" for create/full-file changes. -->
+<!-- Before registering a new sprint, check this table for overlaps. -->
+
+## Rebase Status
+
+| Sprint | Base Commit | Needs Rebase | Reason |
+|--------|-------------|--------------|--------|
+
+<!-- Updated after a sprint ships. "Needs Rebase: yes" means the sprint's worktree must rebase onto the merge target (integration branch if active, otherwise target branch) before continuing. -->
