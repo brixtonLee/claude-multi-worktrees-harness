@@ -67,6 +67,7 @@
 
 | ID | Branch | Worktree | Goal | Phase | Progress | Started |
 |----|--------|----------|------|-------|----------|---------|
+| 009 | sprint/invoice-solid-refactor | ../ai-agents-wt-009 | InvoiceProcessingAgent SOLID refactor | executing | 0/5 | 2026-04-18 |
 
 <!-- Phases: planning | executing | verifying | rework | shipping -->
 
@@ -74,6 +75,23 @@
 
 | File Path | Sprint | Op | Lines |
 |-----------|--------|----|-------|
+| src/AiAgents.Application/Agents/InvoiceProcessingAgent.cs | 009 | modify | — |
+| src/AiAgents.Application/Agents/BankReconciliationAgent.cs | 009 | modify | L22,33,38 |
+| src/AiAgents.Application/Agents/ReceiptCategorizationAgent.cs | 009 | modify | L20,29,34,148 |
+| src/AiAgents.Application/Common/Helpers/DuplicateDetector.cs | 009 | modify | L6 |
+| src/AiAgents.Application/Common/Helpers/CrossVerificationTrigger.cs | 009 | modify | L21,28 |
+| src/AiAgents.Application/Common/Interfaces/IDuplicateDetector.cs | 009 | modify | L3 |
+| src/AiAgents.Application/DependencyInjection/ApplicationServiceRegistration.cs | 009 | modify | L34-39 |
+| tests/AiAgents.Application.Tests/Agents/InvoiceProcessingAgentTests.cs | 009 | modify | L24 |
+| tests/AiAgents.Application.Tests/Agents/BankReconciliationAgentTests.cs | 009 | modify | — |
+| tests/AiAgents.Application.Tests/Agents/ReceiptCategorizationAgentTests.cs | 009 | modify | — |
+| tests/AiAgents.Application.Tests/Helpers/CrossVerificationTriggerTests.cs | 009 | modify | — |
+| src/AiAgents.Application/Common/Interfaces/IInvoiceDuplicateChecker.cs | 009 | create | — |
+| src/AiAgents.Application/Common/Interfaces/ITransactionDuplicateChecker.cs | 009 | create | — |
+| src/AiAgents.Application/Common/Interfaces/IReceiptDuplicateChecker.cs | 009 | create | — |
+| src/AiAgents.Application/Common/Interfaces/ICrossVerificationTrigger.cs | 009 | create | — |
+| src/AiAgents.Application/Common/Interfaces/IInvoicePersistenceService.cs | 009 | create | — |
+| src/AiAgents.Application/Common/Helpers/InvoicePersistenceService.cs | 009 | create | — |
 
 <!-- Op: create | modify. Lines: L50-85 or "—" for create/full-file changes. -->
 <!-- Before registering a new sprint, check this table for overlaps. -->
@@ -82,5 +100,6 @@
 
 | Sprint | Base Commit | Needs Rebase | Reason |
 |--------|-------------|--------------|--------|
+| 009 | 32b29d2 | no | — |
 
 <!-- Updated after a sprint ships. "Needs Rebase: yes" means the sprint's worktree must rebase onto the merge target (integration branch if active, otherwise target branch) before continuing. -->

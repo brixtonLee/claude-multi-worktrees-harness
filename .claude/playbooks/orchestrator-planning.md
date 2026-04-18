@@ -55,25 +55,68 @@ Read `## Integration Branch` section in `docs/sprints/registry.md`.
 ## Step 1 — Explore and Decompose
 
 > **Context budget enforcement:** Follow CLAUDE.md "Plan Mode Context Strategy" strictly. All findings go to `docs/sprints/exploration-notes.md` — not held in context.
+>
+> **Delegation rule:** File reading, grep-based discovery, and SPEC/history/tech-debt scanning are delegated to the `explorer` sub-agent via the Task tool. The orchestrator stays out of the file contents and consumes only the explorer's structured JSON response. The orchestrator still performs Step 1.5 (line-range pinning) and the decomposition itself.
 
-### 10-Step Exploration Workflow
+### 1.1 — Delegate Exploration to `explorer` Sub-agent
 
-1. **Tree-first:** `tree -L 2 [relevant directories]` — understand structure before reading any files
-2. **Grep for patterns:** `grep -rn -m 5 "[pattern]" [directory]` — find existing conventions, not file contents
-3. **Write to exploration-notes.md:** Create `docs/sprints/exploration-notes.md` — dump structure + grep findings
-4. **Pin line ranges:** For each candidate file, `grep -n "[target]" file.cs` — record exact line numbers in exploration-notes
-5. **Scoped reads only:** Read ONLY the pinned line ranges (±10 lines for context). Never full files > 50 lines.
-6. **SPEC lookup (targeted):** `grep -n "##" docs/SPEC.md` → read only the section relevant to the task. Distill key details into exploration-notes.
-7. **Recent history (tail):** `tail -40 docs/completed-sprints.md` — check what previous sprints delivered. `tail -40 docs/archived-sprints.md` — check for related abandoned work.
-8. **Tech debt scan:** `grep -B2 -A6 "[keyword]" docs/tech-debt.md` — check for relevant items. Mark addressed items as Resolved.
-9. **Decompose:** Using exploration-notes as reference, decompose task into subtasks with parallel groups. For subtasks involving SPEC synchronization checklists, ensure ALL steps are represented.
-10. **Context checkpoint:** If context > 50% used, `/compact` now — exploration-notes.md survives and recovery will resume planning from notes.
+Spawn the explorer via the Task tool with this structured prompt:
 
-### Pin Line Numbers (Step 1.5)
+```
+Task description: [1-sentence summary of what the sprint will build]
 
-For each file in planned subtasks, run `grep -n` or scoped `Read` to pin exact line ranges. Do this in the main session — no sub-agent needed.
+Candidate directories:
+- [directory 1]
+- [directory 2]
+
+Known patterns to look for:
+- [pattern or convention hint 1]
+- [pattern or convention hint 2]
+
+Perform the standard exploration workflow:
+  1. Tree structure of candidate directories
+  2. Grep for existing conventions (bounded with -m 5)
+  3. Pin line ranges for candidate files (grep -n, no full reads)
+  4. Scoped reads only (±10 lines context around pinned ranges, never >50 lines unscoped)
+  5. SPEC lookup: grep -n "##" docs/SPEC.md, then read only relevant sections; distill into notes
+  6. Tail docs/completed-sprints.md and docs/archived-sprints.md (last 40 lines each)
+  7. Tech debt scan: grep -B2 -A6 "[keyword]" docs/tech-debt.md
+
+Write findings progressively to docs/sprints/exploration-notes.md.
+Return structured JSON per your output contract — no raw file contents.
+```
+
+The explorer will write to `docs/sprints/exploration-notes.md` as it works, and return a JSON object containing:
+- `candidate_files` (paths, line ranges, modification_type)
+- `conventions_found`
+- `spec_sections_relevant` (distilled summaries, not raw text)
+- `recent_sprints_related`
+- `tech_debt_items`
+- `recommended_subtasks`
+- `collisions_detected`
+
+### 1.2 — Consume Explorer Response
+
+When the explorer returns:
+
+1. **Read the JSON carefully.** Do NOT re-read files the explorer already examined — trust the line ranges and summaries it returned.
+2. **If `collisions_detected` is non-empty**, handle per Step 0's collision rules BEFORE proceeding.
+3. **If `exploration_complete: partial`**, decide whether to spawn a follow-up Task for specific gaps or proceed with what you have.
+4. **If `clarification_needed`**, ask the user before spawning a new explorer.
+
+### 1.3 — Pin Line Numbers (orchestrator, not sub-agent)
+
+For each file that will appear in the sprint manifest, run `grep -n` in the main session to verify/pin exact line ranges. The explorer's returned line ranges are suggestions — the orchestrator owns the manifest, so spot-verify before committing them to `context.md`.
 
 Skip line ranges only when: file is new, change is file-wide, or file is <50 lines.
+
+### 1.4 — Decompose
+
+Using the explorer's `recommended_subtasks` as a starting point (not a prescription), decompose the task into subtasks with parallel groups. For subtasks involving SPEC synchronization checklists, ensure ALL steps are represented.
+
+### 1.5 — Context Checkpoint
+
+If context > 50% used, `/compact` now — `exploration-notes.md` and the explorer's JSON response survive compaction via your existing recovery mechanism; planning will resume from those artifacts.
 
 ---
 
